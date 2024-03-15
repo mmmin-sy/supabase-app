@@ -5,6 +5,36 @@ import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 
+export const supabase = createClient();
+async function selectTodos (){
+  const { data: todos, error } = await supabase.from("todos").select();
+  if (!error) return todos;
+  else return null;
+}
+async function saveTodo (todo: string){
+  const { error: error } = await supabase
+      .from('todos')
+      .insert({ todo: todo })
+
+  if(!error) return await selectTodos();
+  else return null;
+}
+async function updateTodo (id: number, newTodo: string){
+  const { error: error } = await supabase
+      .from('todos')
+      .update({ todo: newTodo })
+      .eq('id', id)
+  if(!error) return await selectTodos();
+  else return null;
+}
+async function deleteTodo (id: number){
+  const { error } = await supabase
+      .from('todos')
+      .delete()
+      .eq('id', id)
+  if(!error) return await selectTodos();
+  else return null;
+}
 export default async function Index() {
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
@@ -16,11 +46,18 @@ export default async function Index() {
       return false;
     }
   };
-
   const isSupabaseConnected = canInitSupabaseClient();
+
+  // Select, Insert, Update and Delete
+  const todos = await selectTodos();
+  //const todos = await saveTodo('Berlin');
+  //const todos = await updateTodo(13, 'Munich');
+  //const todos = await deleteTodo(13);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
+
+      {todos && todos?.map(t => <div>{t.todo}</div>)}
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
           <DeployButton />
