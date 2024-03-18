@@ -14,3 +14,4 @@ _Create the next immutable state tree by simply modifying the current tree_
 - React
 - Nextjs
 - Supabase
+- Vanilla Extract style
