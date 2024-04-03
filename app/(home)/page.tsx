@@ -1,41 +1,15 @@
-import DeployButton from "../components/DeployButton";
-import AuthButton from "../components/AuthButton";
+import DeployButton from "../../components/DeployButton";
+import AuthButton from "../../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import { container } from '@/styles/styles.css';
+import TodoItem from '@/components/todoItem/TodoItem';
+import { selectTodos, deleteTodo } from '@/api/route';
 
 export const supabase = createClient();
-async function selectTodos (){
-  const { data: todos, error } = await supabase.from("todos").select();
-  if (!error) return todos;
-  else return null;
-}
-async function saveTodo (todo: string){
-  const { error: error } = await supabase
-      .from('todos')
-      .insert({ todo: todo })
 
-  if(!error) return await selectTodos();
-  else return null;
-}
-async function updateTodo (id: number, newTodo: string){
-  const { error: error } = await supabase
-      .from('todos')
-      .update({ todo: newTodo })
-      .eq('id', id)
-  if(!error) return await selectTodos();
-  else return null;
-}
-async function deleteTodo (id: number){
-  const { error } = await supabase
-      .from('todos')
-      .delete()
-      .eq('id', id)
-  if(!error) return await selectTodos();
-  else return null;
-}
 export default async function Index() {
   const canInitSupabaseClient = () => {
     // This function is just for the interactive tutorial.
@@ -57,7 +31,9 @@ export default async function Index() {
 
   return (
     <div className={container}>
-      <div>{todos && todos?.map(t => <div>{t.todo}</div>)}</div>
+      <div>
+        {todos && todos?.map(t => <TodoItem id={t.id} text={t.todo} completed={t.completed} />)}
+      </div>
     </div>
   );
 }
