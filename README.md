@@ -8,7 +8,7 @@ _Create the next immutable state tree by simply modifying the current tree_
 
 - install the dependencies. `npm install`.
 - run `npm run dev`.
-- Open http://localhost:3002 to view it in the browser.
+- Open http://localhost:3003 to view it in the browser.
 
 ## Technologies
 - React
