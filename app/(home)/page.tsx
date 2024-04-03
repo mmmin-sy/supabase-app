@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
-import { container } from '@/styles/styles.css';
+import { todoList } from '@/styles/styles.css';
 import TodoItem from '@/components/todoItem/TodoItem';
 import { selectTodos, deleteTodo } from '@/api/route';
 
@@ -30,7 +30,7 @@ export default async function Index() {
   //const todos = await deleteTodo(13);
 
   return (
-    <div className={container}>
+    <div className={todoList}>
       <div>
         {todos && todos?.map(t => <TodoItem id={t.id} text={t.todo} completed={t.completed} />)}
       </div>

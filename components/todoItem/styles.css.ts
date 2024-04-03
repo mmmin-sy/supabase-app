@@ -5,5 +5,5 @@ export const container = style({
 })
 
 export const disabledColor = style({
-	color: "lightgray"
+	color: "#666"
 })
