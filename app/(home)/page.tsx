@@ -5,8 +5,9 @@ import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
 import { todoList } from '@/styles/styles.css';
+import { selectTodos, saveTodo } from '@/api/route';
 import TodoItem from '@/components/todoItem/TodoItem';
-import { selectTodos, deleteTodo } from '@/api/route';
+import AddTodo from '@/components/addTodo/AddTodo';
 
 export const supabase = createClient();
 
@@ -31,6 +32,7 @@ export default async function Index() {
 
   return (
     <div className={todoList}>
+      <AddTodo />
       <div>
         {todos && todos?.map(t => <TodoItem id={t.id} text={t.todo} completed={t.completed} />)}
       </div>
