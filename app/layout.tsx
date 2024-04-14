@@ -1,6 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import "../styles/globalStyle.css";
-import { selectedMenu } from "@/styles/styles.css";
+import PostProvider from "@/context/TodoContext"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,13 +22,17 @@ export default function RootLayout({
       <body>
       <header>
         <ul>
-          <li className={selectedMenu}>Day</li>
+          <li>Day</li>
           <li>week</li>
           <li>Month</li>
           <li>Year</li>
         </ul>
       </header>
-      <main>{children}</main>
+
+        <PostProvider>
+          <main>{children}</main>
+        </PostProvider>
+
       <footer></footer>
       </body>
     </html>

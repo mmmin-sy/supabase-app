@@ -1,8 +1,9 @@
 'use client';
 
 import {disabledColor, container} from './styles.css';
-import { deleteTodo, updateTodo } from '@/api/route';
-import {useState} from "react";
+import {deleteTodo, selectTodos, updateTodo} from '@/api/route';
+import {useContext, useEffect} from "react";
+import {TodoContext} from "@/context/TodoContext";
 
 interface TodoProps {
 	id: number;
@@ -10,17 +11,30 @@ interface TodoProps {
 	completed: boolean;
 }
 export default function TodoItem ({ id, text, completed } : TodoProps){
+	const { updateTodos } = useContext(TodoContext);
+
+	const changeTodoStatus = () => {
+		updateTodo(id, { todo: text, completed: true})
+			.then(() => selectTodos()
+				.then(todos=> {
+					updateTodos(todos)
+			}));
+	}
+
+	const deleteTodoItem = () => {
+		deleteTodo(id)
+			.then(() => selectTodos()
+				.then(todos=> {
+					updateTodos(todos)
+				}));
+	}
 
 	return (
 			<div className={container}>
-				<span><input type="checkbox" disabled={completed} /></span>
+				<span><input type="checkbox" disabled={completed}/></span>
 				<span className={completed ? disabledColor : ''}>{text}</span>
-				<form action={updateTodo.bind(null, id, { todo: text, completed: true})}>
-					<button type='submit'>{completed ? 'Reverse' : 'Complete'}</button>
-				</form>
-				<form action={deleteTodo.bind(null, id)}>
-					<button type='submit'>Delete</button>
-				</form>
+				<button type='button' onClick={changeTodoStatus}>{completed ? 'Reverse' : 'Complete'}</button>
+				<button type='button' onClick={deleteTodoItem}>Delete</button>
 			</div>
 	);
 }
